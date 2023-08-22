@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fieldReference"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String           @id
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  email               String           @unique
+  firstName           String
+  lastName            String
+  address             String
+  state               String
+  country             String
+  postalCode          Int
+  industry            String
+  Deployments         Deployments[]
+  businessName        String
+  CloudConnector      CloudConnector[]
+  secretManagerRegion String?
+  StackConnector      StackConnector[]
+}
+
+model Deployments {
+  id                     String           @id @unique
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  name                   String
+  progress               String
+  user                   User             @relation(fields: [userId], references: [id])
+  userId                 String
+  cloud                  String
+  az                     String[]
+  instance               String
+  region                 String
+  services               Json
+  twgId                  String?
+  twgArn                 String?
+  securenatgwHubTgwRtb   String?
+  securenatgwSpokeTgwRtb String?
+  StackConnector         StackConnector[]
+}
+
+model CloudConnector {
+  id             String           @id @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  name           String
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+  status         String
+  cloud          String
+  StackConnector StackConnector[]
+  accessKey      String
+  accountId      String
+}
+
+model StackConnector {
+  id           String         @id @unique
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  connector    CloudConnector @relation(fields: [connectorId], references: [id])
+  connectorId  String
+  status       String
+  deployment   Deployments    @relation(fields: [deploymentId], references: [id])
+  deploymentId String
+  User         User?          @relation(fields: [userId], references: [id])
+  userId       String?
+}

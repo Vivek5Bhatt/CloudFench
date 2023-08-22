@@ -1,0 +1,45 @@
+export const AwsPolicy = ` 
+{
+  "Version":"2012-10-17",
+  "Statement":[
+    {
+      "Effect":"Allow",
+      "Action":[
+        "ec2:DescribeVpcs",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeNetworkInterfaceAttribute"
+      ],
+      "Resource":"*"
+    },
+    {
+      "Effect":"Allow",
+      "Action":[
+        "ec2:CreateRoute",
+        "ec2:DeleteRoute",
+        "ec2:CreateRouteTable",
+        "ec2:DeleteRouteTable",
+        "ec2:AssociateRouteTable",
+        "ec2:DisassociateRouteTable",
+        "ec2:DescribeRouteTables",
+        "ec2:CreateTags"
+      ],
+      "Resource":"*"
+    },
+    {
+      "Effect":"Allow",
+      "Action":[
+        "cloudformation:ListStacks",
+        "cloudformation:ListStackSets",
+        "cloudformation:CreateStack",
+        "cloudformation:CreateStackSet",
+        "cloudformation:DescribeStacks",
+        "cloudformation:DescribeStackResource",
+        "cloudformation:DescribeStackEvents",
+        "cloudformation:RollbackStack"
+      ],
+      "Resource":"*"
+    }
+  ]
+}
+`;
